@@ -12,6 +12,13 @@
 import flywheel
 import json
 import os
+import backoff
+from flywheel.rest import ApiException
+
+@backoff.on_exception(backoff.expo, ApiException, max_time=60)
+# will retry for 60s, waiting an exponentially increasing delay between retries, e.g. 1s, 2s, 4s, 8s
+def download_json_file(acquisition_container,file_container,dest_name):
+    acquisition_container.download_file(file_container.name, dest_name)
 
 api_key='<api-key>'
 fw_projects = ['DMG_HTAN','DIPG']
@@ -74,7 +81,7 @@ for fw_proj in fw_projects:
 
         ## inject json metadata into nifti file info (download to temp file & load)
         if json_cntr:
-            acq.download_file(json_cntr.name, 'temp.json')
+            download_json_file(acq,json_cntr,'temp.json')
             with open('temp.json') as f:
                 metadata = json.load(f)
             nii_cntr.update_info(metadata)
