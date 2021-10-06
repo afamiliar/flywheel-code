@@ -78,6 +78,6 @@ for fw_proj in fw_projects:
             with open('temp.json') as f:
                 metadata = json.load(f)
             nii_cntr.update_info(metadata)
-            print('Added JSON metadata to '+subj_label+' '+session_label+' '+acq_label+' '+nii_fn)
+            print('Added JSON metadata to '+path_to_acq+'/'+nii_fn)
             os.remove('temp.json')
 
