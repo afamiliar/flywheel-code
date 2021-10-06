@@ -11,6 +11,7 @@
 
 import flywheel
 import json
+import os
 
 api_key='<api-key>'
 fw_projects = ['DMG_HTAN','DIPG']
